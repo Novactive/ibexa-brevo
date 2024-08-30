@@ -37,17 +37,20 @@ class CreateContact extends BrevoApi
             }
             $data['listIds'][$key] = (int) $listId;
         }
-        $this->validate($data);
-        $config = $configuration?? $this->getConfiguration();
-        $apiInstance = new ContactsApi( config: $config);
+        //make sure attributes is object or array
+        if (!empty($data['attributes']) && !is_object($data['attributes'])) {
+            $data['attributes'] = (object) ((array)$data['attributes']);
+        }
+        $data['updateEnabled'] = (bool)($data['updateEnabled'] ?? false);
         try {
-            //$obj = (object)[ 'PRENOM' => 'Ousmane ', 'NOM' => 'KANTE'];
+            $this->validate($data);
+            $apiInstance = new ContactsApi( config: $configuration?? $this->getConfiguration());
             $createContact = new CreateContactModel($data);
 
             $result = $apiInstance->createContact($createContact);
             if ($result === null) {
                 throw new CreateContactException(
-                    message: 'Could not create contact or contact already Check on brevo side if your contact exist',
+                    message: 'Could not create/update contact or contact already exists, Check on brevo side',
                     data: $data
                 );
             }
@@ -71,7 +74,7 @@ class CreateContact extends BrevoApi
             if ($e instanceof CreateContactException) {
                 throw $e;
             }
-            throw new CreateContactException($e->getMessage(), $e->getCode(), $e);
+            throw new CreateContactException($e->getMessage(), $e->getCode(), $e, $data);
         }
     }
 }
