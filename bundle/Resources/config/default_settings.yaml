@@ -1,0 +1,12 @@
+parameters:
+    almaviacx_brevo.default.is_enabled: false
+    almaviacx_brevo.default.contact_mapping: ~
+    almaviacx_brevo.default.brevo_api:
+        api_key: ~
+        username: ''
+        password: ''
+        host: 'https://api.brevo.com/v3'
+        userAgent: 'Swagger-Codegen/2.0.0/php'
+        debug: false
+        debug_file: 'php://output'
+        temp_folder_path: ~

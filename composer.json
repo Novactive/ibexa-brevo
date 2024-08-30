@@ -1,0 +1,24 @@
+{
+    "name": "almaviacx/ibexa-brevo",
+    "description": "Connect Brevo with Ibexa",
+    "type": "ibexa-bundle",
+    "require": {
+        "php": ">=8.1",
+        "ibexa/oss": "^4.5",
+        "getbrevo/brevo-php": "dev-fix-guzzle"
+    },
+    "autoload": {
+        "psr-4": {
+            "AlmaviaCX\\IbexaBrevo\\": "bundle/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ousmane KANTE",
+            "email": "ousmane.kante@almaviacx.com"
+        }
+    ],
+    "repositories": {
+        "brevo-php": { "type": "vcs", "url": "https://github.com/okante/brevo-php" }
+    }
+}

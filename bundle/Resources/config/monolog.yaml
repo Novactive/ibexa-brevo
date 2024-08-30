@@ -1,0 +1,8 @@
+monolog:
+    handlers:
+        almaviacx_brevo:
+            type: rotating_file
+            path: '%kernel.logs_dir%/almaviacx_brevo.log'
+            channels: ['almaviacx_brevo']
+            level: info
+            max_files: 5
