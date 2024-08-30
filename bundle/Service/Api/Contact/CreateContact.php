@@ -2,6 +2,7 @@
 
 namespace AlmaviaCX\IbexaBrevo\Service\Api\Contact;
 
+use AlmaviaCX\IbexaBrevo\Exception\BrevoException;
 use AlmaviaCX\IbexaBrevo\Exception\CreateContactException;
 use AlmaviaCX\IbexaBrevo\Service\Api\BrevoApi;
 use Brevo\Client\Api\ContactsApi;
@@ -23,19 +24,25 @@ class CreateContact extends BrevoApi
             'attributes'
         ]);
     }
+    /**
+     *@throws BrevoException
+     */
     public function __invoke(array $data, ?Configuration $configuration = null): CreateUpdateContactModel
     {
+        $data['listIds'] = array_unique((array)($data['listIds']??[]));
+        foreach ($data['listIds'] as $key=> $listId) {
+            if (!is_numeric($listId) || ((int) $listId) <= 0) {
+                unset($data['listIds'][$key]);
+                continue;
+            }
+            $data['listIds'][$key] = (int) $listId;
+        }
         $this->validate($data);
         $config = $configuration?? $this->getConfiguration();
         $apiInstance = new ContactsApi( config: $config);
         try {
             //$obj = (object)[ 'PRENOM' => 'Ousmane ', 'NOM' => 'KANTE'];
-            $createContact = new CreateContactModel([
-                'email' => $data['email'],
-                'updateEnabled' => (bool)($data['updateEnabled']?? true),
-                'attributes' => (object)$data['attributes'],
-                'listIds' =>(array)$data['listIds']
-            ]);
+            $createContact = new CreateContactModel($data);
 
             $result = $apiInstance->createContact($createContact);
             if ($result === null) {

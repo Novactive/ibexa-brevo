@@ -21,7 +21,7 @@ class Configuration extends SiteAccessConfiguration
                     ->scalarNode('api_key')->isRequired()->end()
                     ->scalarNode('username')->defaultValue('')->end()
                     ->scalarNode('password')->defaultValue('')->end()
-                    ->scalarNode('host')->isRequired()->defaultValue('https://api.brevo.com/v3')->end()
+                    ->scalarNode('host')->defaultValue('https://api.brevo.com/v3')->end()
                     ->scalarNode('userAgent')->defaultValue('Swagger-Codegen/2.0.0/php')->end()
                     ->booleanNode('debug')->defaultFalse()->end()
                     ->scalarNode('debug_file')->defaultValue('php://output')->end()

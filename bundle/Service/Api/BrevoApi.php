@@ -3,6 +3,7 @@
 namespace AlmaviaCX\IbexaBrevo\Service\Api;
 
 use AlmaviaCX\IbexaBrevo\Exception\BrevoException;
+use AlmaviaCX\IbexaBrevo\Exception\BrevoNotEnabledException;
 use AlmaviaCX\IbexaBrevo\Exception\UndefinedRequiredFieldException;
 use AlmaviaCX\IbexaBrevo\Service\Configuration\BrevoConfigurator;
 use Brevo\Client\Configuration;
@@ -36,9 +37,14 @@ abstract class BrevoApi
      */
     function validate($data): void
     {
+        if ((bool)$this->brevoConfigurator->getParameter('is_enabled') !== true) {
+            throw new BrevoNotEnabledException();
+        }
         foreach ($this->requiredFields as $requiredField) {
-            if (!isset($data[$requiredField])) {
-                throw new UndefinedRequiredFieldException('Required field ' . $requiredField . ' not set');
+            if (empty($data[$requiredField])) {
+                throw new UndefinedRequiredFieldException(
+                    sprintf('Required field "%s" is either not set or empty, it shouldn\'t', $requiredField)
+                );
             }
         }
     }

@@ -13,22 +13,36 @@ class BrevoConfigurator
     }
     public function getBrevoApiSettings(): array
     {
-        return (array) $this->configResolver->getParameter('brevo_api', Configuration::EXTENSION_ALIAS);
+        return (array) $this->getParameter('brevo_api');
+    }
+    public function getParameter(string $parameterName)
+    {
+        return $this->configResolver->getParameter($parameterName, Configuration::EXTENSION_ALIAS);
     }
 
 
     public function getConfiguration(): BrevoClientConfiguration
     {
         $apiSettings = $this->getBrevoApiSettings();
-        $brevoConfiguration = BrevoClientConfiguration::getDefaultConfiguration();
-        $brevoConfiguration
+        $debug = (bool)($apiSettings['debug']?? false);
+        $brevoConfiguration = BrevoClientConfiguration::getDefaultConfiguration()
             ->setApikey('api-key', $apiSettings['api_key'])
-            ->setUsername((string)$apiSettings['username'])
-            ->setPassword((string)$apiSettings['password'])
-            ->setHost($apiSettings['host'])
-            ->setUserAgent((string)$apiSettings['user_agent'])
-            ->setDebug((bool)$apiSettings['debug'])
-            ->setDebugFile((string)$apiSettings['debug_file']);
+            ->setDebugFile($debug);
+        if (!empty($apiSettings['username'])) {
+            $brevoConfiguration->setUsername((string)$apiSettings['username']);
+        }
+        if (!empty($apiSettings['password'])) {
+            $brevoConfiguration->setPassword((string)$apiSettings['password']);
+        }
+        if (!empty($apiSettings['host'])) {
+            $brevoConfiguration->setHost((string)$apiSettings['host']);
+        }
+        if (!empty($apiSettings['userAgent'])) {
+            $brevoConfiguration->setUserAgent((string)$apiSettings['userAgent']);
+        }
+        if (!empty($apiSettings['debug_file'])) {
+            $brevoConfiguration->setDebugFile((string)$apiSettings['debug_file']);
+        }
         if (!empty($apiSettings['temp_folder_path'])) {
             $brevoConfiguration->setTempFolderPath((string)$apiSettings['temp_folder_path']);
         }

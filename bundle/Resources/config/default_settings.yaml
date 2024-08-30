@@ -6,7 +6,7 @@ parameters:
         username: ''
         password: ''
         host: 'https://api.brevo.com/v3'
-        userAgent: 'Swagger-Codegen/2.0.0/php'
+        userAgent: ~
         debug: false
-        debug_file: 'php://output'
+        debug_file: ~
         temp_folder_path: ~
