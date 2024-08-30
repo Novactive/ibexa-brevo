@@ -60,6 +60,14 @@ class CreateContact extends BrevoApi
             );
             return $result;
         } catch (ApiException|Throwable $e) {
+            //it may be simple warning (when contact exists and cannot be created) or a critical error
+            $this->logger->error(
+                'Create contact Error',
+                [
+                    'data' => $data,
+                    'exception' => $e->getMessage(),
+                ]
+            );
             if ($e instanceof CreateContactException) {
                 throw $e;
             }
