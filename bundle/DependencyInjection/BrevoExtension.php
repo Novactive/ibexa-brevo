@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
 
 
-final class AlmaviaCXBrevoExtension extends Extension implements PrependExtensionInterface
+final class BrevoExtension extends Extension implements PrependExtensionInterface
 {
     public const CONFIG_DIR = __DIR__.'/../Resources/config';
     public function getAlias(): string
